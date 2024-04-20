@@ -3,11 +3,15 @@ all: vet
 all: package
 all: package_race
 
+test: vet
+test: base_test
 
-test:
+base_test:
 	go test ./... -v
+
 vet:
 	go vet ./...
+
 package: server
 
 package_race: server_race
