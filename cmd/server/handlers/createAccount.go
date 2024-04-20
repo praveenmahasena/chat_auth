@@ -26,9 +26,10 @@ func CreateAccount(gctx *gin.Context) {
 	defer cancel()
 
 	if err := user.Insert(ctx); err != nil {
-
-	} else {
-
+		gctx.JSONP(http.StatusInternalServerError, "server error")
+		return
 	}
+
+	//TODO: adding JWT and sending it to client
 
 }
