@@ -3,11 +3,11 @@ package main
 import (
 	"log"
 
-	"github.com/praveenmahasena647/chat-app/cmd"
+	"github.com/praveenmahasena647/chat-app/internal"
 )
 
 func main() {
-	if err := cmd.Start(); err != nil {
+	if err := internal.Start(); err != nil {
 		log.Fatalln(err)
 	}
 }
