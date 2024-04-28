@@ -2,8 +2,8 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/praveenmahasena647/chat-app/cmd/server/handlers"
 	"github.com/praveenmahasena647/chat-app/internal/helpers"
+	"github.com/praveenmahasena647/chat-app/internal/server/handlers"
 )
 
 type Server struct {

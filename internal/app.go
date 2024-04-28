@@ -1,8 +1,8 @@
-package cmd
+package internal
 
 import (
-	"github.com/praveenmahasena647/chat-app/cmd/server"
 	"github.com/praveenmahasena647/chat-app/internal/postgres"
+	"github.com/praveenmahasena647/chat-app/internal/server"
 )
 
 func Start() error {
