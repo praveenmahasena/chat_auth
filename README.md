@@ -19,7 +19,8 @@ This repository is a micro service which contains only Authentication and Author
 
 ### Installation
 ```bash
-git clone https://github.com/praveenmahasena/chat_auth.git```
+git clone https://github.com/praveenmahasena/chat_auth.git
+```
 
 ### Start
 ```bash
