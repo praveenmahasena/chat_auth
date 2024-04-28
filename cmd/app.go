@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/praveenmahasena647/chat-app/cmd/postgres"
 	"github.com/praveenmahasena647/chat-app/cmd/server"
+	"github.com/praveenmahasena647/chat-app/internal/postgres"
 )
 
 func Start() error {

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/praveenmahasena647/chat-app/cmd/helpers"
-	"github.com/praveenmahasena647/chat-app/cmd/postgres"
+	"github.com/praveenmahasena647/chat-app/internal/helpers"
+	"github.com/praveenmahasena647/chat-app/internal/postgres"
 )
 
 func CreateAccount(gctx *gin.Context) {
