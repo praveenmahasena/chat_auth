@@ -6,30 +6,21 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/praveenmahasena647/chat-app/internal/helpers"
 	"github.com/praveenmahasena647/chat-app/internal/postgres"
 )
 
 func CreateAccount(gctx *gin.Context) {
-	var user = postgres.NewUser()
-	if err := gctx.ShouldBind(&user); err != nil {
-		gctx.JSONP(http.StatusNotAcceptable, "Input not allowed")
+	var usr = postgres.NewUser()
+
+	if err := gctx.BindJSON(&usr); err != nil {
+		gctx.JSONP(http.StatusNotAcceptable, "")
 		return
 	}
-	if h, e := helpers.HashPassword(user.Password); e != nil {
-		gctx.JSONP(http.StatusInternalServerError, "Password Hash Error")
-		return
-	} else {
-		user.Password = h
-	}
-	var ctx, cancel = context.WithTimeout(context.Background(), time.Minute*20)
+
+	var ctx, cancel = context.WithTimeout(context.Background(), time.Duration(10)*time.Minute)
 	defer cancel()
-
-	if err := user.Insert(ctx); err != nil {
-		gctx.JSONP(http.StatusInternalServerError, "server error")
+	if exist := usr.Check(ctx); exist {
 		return
 	}
-
-	//TODO: adding JWT and sending it to client
-
+	gctx.JSONP(http.StatusOK, "done")
 }
