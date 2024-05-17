@@ -22,6 +22,9 @@ func (s *Server) Run() error {
 	g.Use(helpers.CORS())
 
 	g.POST("/create", handlers.CreateAccount)
+	g.Use(helpers.DecodeToken())
+	g.GET("/profile", handlers.Profile)
+	g.GET("/verify", handlers.Verify)
 
 	return g.Run(s.ListenAddr)
 }
