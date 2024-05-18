@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"context"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/praveenmahasena647/chat-app/internal/postgres"
@@ -11,9 +9,7 @@ import (
 
 func Profile(gctx *gin.Context) {
 	var email, _ = gctx.Get("Email")
-	var ctx, cancel = context.WithTimeout(context.Background(), 15*time.Minute)
-	defer cancel()
-	var verified, err = postgres.IsVerified(ctx, email.(string))
+	var verified, err = postgres.IsVerified(gctx, email.(string))
 	if err != nil {
 		gctx.JSONP(http.StatusInternalServerError, "")
 		return
