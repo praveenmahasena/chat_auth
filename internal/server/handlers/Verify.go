@@ -1,10 +1,8 @@
 package handlers
 
 import (
-	"context"
 	"net/http"
 	"sync"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/praveenmahasena647/chat-app/internal/helpers"
@@ -13,10 +11,8 @@ import (
 
 func Verify(gctx *gin.Context) {
 	var email, _ = gctx.Get("Email")
-	var ctx, cancel = context.WithTimeout(context.Background(), time.Duration(15)*time.Minute)
-	defer cancel()
-	var verified, err = postgres.IsVerified(ctx, email.(string))
-	if err != nil {
+	var verified, verifiedErr = postgres.IsVerified(gctx, email.(string))
+	if verifiedErr != nil {
 		gctx.JSONP(http.StatusNotFound, "user does not exists")
 		return
 	}

@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"context"
-
 )
 
 type User struct {

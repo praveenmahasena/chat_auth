@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"context"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/praveenmahasena647/chat-app/internal/helpers"
@@ -23,9 +21,7 @@ func CreateAccount(gctx *gin.Context) {
 	} else {
 		usr.Password = p
 	}
-	var ctx, cancel = context.WithTimeout(context.Background(), time.Duration(15)*time.Minute)
-	defer cancel()
-	if err := usr.InsertOne(ctx); err != nil {
+	if err := usr.InsertOne(gctx); err != nil {
 		gctx.JSONP(http.StatusNotAcceptable, "User Already Exists")
 		return
 	}
