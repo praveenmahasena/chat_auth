@@ -22,6 +22,12 @@ This repository is a micro service which contains only Authentication and Author
 git clone https://github.com/praveenmahasena/chat_auth.git
 ```
 
+### Migration
+This app uses [postgresql](https://www.postgresql.org/) as the database driver and before doing the migration we ask you to create a database named **chat_app** by loging in to your postgresql client and running the following commend `CREATE DATABASE chat_app;`.
+
+Then with the help of [sqlTool](https://github.com/praveenmahasena/sqlTool/) you could setup all the other tables.
+
+
 ### Start
 ```bash
 make server && ./bin/server
