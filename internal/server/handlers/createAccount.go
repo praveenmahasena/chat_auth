@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"context"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/praveenmahasena647/chat-app/internal/helpers"
@@ -11,25 +9,27 @@ import (
 )
 
 func CreateAccount(gctx *gin.Context) {
-	var user = postgres.NewUser()
-	if err := gctx.ShouldBind(&user); err != nil {
-		gctx.JSONP(http.StatusNotAcceptable, "Input not allowed")
+	var usr = new(postgres.User)
+	if err := gctx.Bind(usr); err != nil {
+		gctx.JSONP(http.StatusNotAcceptable, "Invalid input")
 		return
 	}
-	if h, e := helpers.HashPassword(user.Password); e != nil {
-		gctx.JSONP(http.StatusInternalServerError, "Password Hash Error")
+
+	if p, err := helpers.HashPassword(usr.Password); err != nil {
+		gctx.JSONP(http.StatusInternalServerError, "Error during password hashing")
 		return
 	} else {
-		user.Password = h
+		usr.Password = p
 	}
-	var ctx, cancel = context.WithTimeout(context.Background(), time.Minute*20)
-	defer cancel()
-
-	if err := user.Insert(ctx); err != nil {
-		gctx.JSONP(http.StatusInternalServerError, "server error")
+	if err := usr.InsertOne(gctx); err != nil {
+		gctx.JSONP(http.StatusNotAcceptable, "User Already Exists")
 		return
 	}
 
-	//TODO: adding JWT and sending it to client
-
+	var jwt, jwtErr = helpers.GenerateJWT(usr.Email)
+	if jwtErr != nil {
+		gctx.JSONP(http.StatusInternalServerError, "Error during generating JWT")
+		return
+	}
+	gctx.JSONP(http.StatusCreated, jwt)
 }

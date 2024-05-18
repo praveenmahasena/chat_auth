@@ -21,3 +21,6 @@ server:
 
 server_race:
 	go build --race -o ./bin/server_race .
+
+run:
+	./bin/server
