@@ -9,27 +9,27 @@ import (
 )
 
 func CreateAccount(gctx *gin.Context) {
-	var usr = new(postgres.User)
-	if err := gctx.Bind(usr); err != nil {
+	user := postgres.NewUserStruct()
+	if err := gctx.Bind(user); err != nil {
 		gctx.JSONP(http.StatusNotAcceptable, "Invalid input")
 		return
 	}
 
-	if p, err := helpers.HashPassword(usr.Password); err != nil {
+	if password, passwordErr := helpers.HashPassword(user.Password); passwordErr != nil {
 		gctx.JSONP(http.StatusInternalServerError, "Error during password hashing")
 		return
 	} else {
-		usr.Password = p
+		user.Password = password
 	}
-	if err := usr.InsertOne(gctx); err != nil {
+	if userInsertErr := user.InsertOne(gctx); userInsertErr != nil {
 		gctx.JSONP(http.StatusNotAcceptable, "User Already Exists")
 		return
 	}
 
-	var jwt, jwtErr = helpers.GenerateJWT(usr.Email)
-	if jwtErr != nil {
+	JWT, JWTErr := helpers.GenerateJWT(user.Email)
+	if JWTErr != nil {
 		gctx.JSONP(http.StatusInternalServerError, "Error during generating JWT")
 		return
 	}
-	gctx.JSONP(http.StatusCreated, jwt)
+	gctx.JSONP(http.StatusCreated, JWT)
 }

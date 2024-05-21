@@ -17,7 +17,7 @@ func New(port string) *Server {
 }
 
 func (s *Server) Run() error {
-	var g = gin.Default()
+	g := gin.Default()
 
 	g.Use(helpers.CORS())
 

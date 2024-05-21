@@ -13,7 +13,7 @@ var (
 )
 
 func Connect() error {
-	var dns string = fmt.Sprint("host=localhost port=5432 user=postgres password=Sahan2015 dbname=chat_app sslmode=disable")
+	dns := fmt.Sprint("host=localhost port=5432 user=postgres password=Sahan2015 dbname=chat_app sslmode=disable")
 	connection, err = sql.Open("postgres", dns)
 
 	if err != nil {
