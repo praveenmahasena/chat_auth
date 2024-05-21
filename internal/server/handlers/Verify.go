@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/praveenmahasena647/chat-app/internal/helpers"
@@ -10,8 +9,8 @@ import (
 )
 
 func Verify(gctx *gin.Context) {
-	var email, _ = gctx.Get("Email")
-	var verified, verifiedErr = postgres.IsVerified(gctx, email.(string))
+	email, _ := gctx.Get("Email")
+	verified, verifiedErr := postgres.IsVerified(gctx, email.(string))
 	if verifiedErr != nil {
 		gctx.JSONP(http.StatusNotFound, "user does not exists")
 		return
@@ -20,27 +19,18 @@ func Verify(gctx *gin.Context) {
 		gctx.JSONP(http.StatusMethodNotAllowed, "user Already verified")
 		return
 	}
-	jwt, err := helpers.GenerateJWTVerify(email.(string))
-	if err != nil {
+	JWT, JWTErr := helpers.GenerateJWTVerify(email.(string))
+	if JWTErr != nil {
 		gctx.JSONP(http.StatusInternalServerError, "couldnt make JWT")
 		return
 	}
-	err = sendMail(jwt, email.(string))
-	if err != nil {
+	mailErr := sendMail(JWT, email.(string))
+	if mailErr != nil {
 		return
 	}
 	gctx.JSONP(http.StatusOK, "mail sent")
 }
 
-func sendMail(jwt, mail string) error {
-	var wg = &sync.WaitGroup{}
-	wg.Add(1)
-	var ch = make(chan error)
-	helpers.SendMail(jwt, mail, wg, ch)
-	wg.Wait()
-
-	if err := <-ch; err != nil {
-		return err
-	}
+func sendMail(JWT, mailID string) error {
 	return nil
 }

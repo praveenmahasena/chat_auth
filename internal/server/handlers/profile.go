@@ -8,9 +8,9 @@ import (
 )
 
 func Profile(gctx *gin.Context) {
-	var email, _ = gctx.Get("Email")
-	var verified, err = postgres.IsVerified(gctx, email.(string))
-	if err != nil {
+	emailID, _ := gctx.Get("Email")
+	verified, verifyErr := postgres.IsVerified(gctx, emailID.(string))
+	if verifyErr != nil {
 		gctx.JSONP(http.StatusInternalServerError, "")
 		return
 	}

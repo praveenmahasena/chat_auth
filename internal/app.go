@@ -6,9 +6,10 @@ import (
 )
 
 func Start() error {
-	if err := postgres.Connect(); err != nil {
-		return err
+	DBConnectionErr := postgres.Connect()
+	if DBConnectionErr != nil {
+		return DBConnectionErr
 	}
-	var s = server.New(":42069")
+	s := server.New(":42069")
 	return s.Run()
 }

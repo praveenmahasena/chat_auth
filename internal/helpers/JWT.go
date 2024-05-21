@@ -8,12 +8,12 @@ import (
 )
 
 var (
-    key    []byte = []byte("yayayayaa")
-    verify []byte = []byte("verify")
+	key    []byte = []byte("yayayayaa")
+	verify []byte = []byte("verify")
 )
 
 func GenerateJWT(m string) (string, error) {
-	var token = jwt.NewWithClaims(jwt.SigningMethodHS256,
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"Email": m,
 			"exp":   time.Now().Add(time.Hour * 24 * 15).Unix(),
@@ -23,11 +23,11 @@ func GenerateJWT(m string) (string, error) {
 }
 
 func DecodeJWT(t string) (string, error) {
-	var token, err = jwt.Parse(t, func(t *jwt.Token) (interface{}, error) {
+	token, tokenErr := jwt.Parse(t, func(t *jwt.Token) (interface{}, error) {
 		return key, nil
 	})
-	if err != nil {
-		return "", err
+	if tokenErr != nil {
+		return "", tokenErr
 	}
 	if !token.Valid {
 		return "", errors.New("Invalid Token")
@@ -35,9 +35,9 @@ func DecodeJWT(t string) (string, error) {
 	return token.Claims.(jwt.MapClaims)["Email"].(string), nil
 }
 
-func GenerateJWTVerify(m string)(string,error){
-    var token=jwt.NewWithClaims(jwt.SigningMethodHS256,jwt.MapClaims{
-        "email":m,
-    })
-    return token.SignedString(verify)
+func GenerateJWTVerify(m string) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"email": m,
+	})
+	return token.SignedString(verify)
 }
