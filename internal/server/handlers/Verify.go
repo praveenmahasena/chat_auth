@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/praveenmahasena647/chat-app/internal/helpers"
@@ -32,5 +33,12 @@ func Verify(gctx *gin.Context) {
 }
 
 func sendMail(JWT, mailID string) error {
-	return nil
+	wg := &sync.WaitGroup{}
+	err := make(chan error)
+	wg.Add(1)
+
+	go helpers.Mailer(JWT, mailID, wg, err)
+
+	wg.Wait()
+	return <-err
 }

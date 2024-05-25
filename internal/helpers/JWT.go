@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -40,4 +41,17 @@ func GenerateJWTVerify(m string) (string, error) {
 		"email": m,
 	})
 	return token.SignedString(verify)
+}
+
+func DecodeJWTVerify(m string) (string, error) {
+	token, tokenErr := jwt.Parse(m, func(t *jwt.Token) (interface{}, error) {
+		return verify, nil
+	})
+	if tokenErr != nil {
+		return "", tokenErr
+	}
+	if !token.Valid {
+		return "", fmt.Errorf("token not Valid")
+	}
+	return token.Claims.(jwt.MapClaims)["email"].(string), nil
 }

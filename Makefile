@@ -2,6 +2,7 @@ all: test
 all: vet
 all: package
 all: package_race
+all: run
 
 test: vet
 test: base_test
