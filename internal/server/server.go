@@ -25,14 +25,14 @@ func (s *Server) Run() error {
 
 	g.POST("/create", handlers.CreateAccount)
 
-	g.GET("/profile", handlers.RouteGurd, handlers.Profile)
-	g.GET("/verify", handlers.RouteGurd, handlers.Verify)
+	g.GET("/profile", handlers.RouteGuard, handlers.Profile)
+	g.GET("/verify", handlers.RouteGuard, handlers.Verify)
 
 	g.GET("/mark/:id", handlers.MarkVerify)
 
 	g.POST("/login", handlers.Login)
 
-	g.GET("/chatroom", handlers.RouteGurd, func(ctx *gin.Context) {
+	g.GET("/chatroom", handlers.RouteGuard, func(ctx *gin.Context) {
 		ctx.Status(http.StatusOK)
 	})
 

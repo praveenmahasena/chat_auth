@@ -8,7 +8,7 @@ import (
 	"github.com/praveenmahasena647/chat-app/internal/helpers"
 )
 
-func RouteGurd(ctx *gin.Context) {
+func RouteGuard(ctx *gin.Context) {
 	token := ctx.GetHeader("X-Token")
 	if token == "" {
 		ctx.AbortWithError(http.StatusMethodNotAllowed, fmt.Errorf("u do not have the token"))
