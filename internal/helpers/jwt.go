@@ -16,8 +16,8 @@ var (
 func GenerateJWT(m string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"Email": m,
-			"exp":   time.Now().Add(time.Hour * 24 * 15).Unix(),
+			"Email": m,                                          // TODO: change the "Email" to const
+			"exp":   time.Now().Add(time.Hour * 24 * 15).Unix(), // TODO: change the "exp" to const
 		},
 	)
 	return token.SignedString(key)
@@ -33,12 +33,12 @@ func DecodeJWT(t string) (string, error) {
 	if !token.Valid {
 		return "", errors.New("Invalid Token")
 	}
-	return token.Claims.(jwt.MapClaims)["Email"].(string), nil
+	return token.Claims.(jwt.MapClaims)["Email"].(string), nil // TODO: change the "Email" to const
 }
 
 func GenerateJWTVerify(m string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email": m,
+		"email": m, // // TODO: change the "email" to const
 	})
 	return token.SignedString(verify)
 }
@@ -53,5 +53,5 @@ func DecodeJWTVerify(m string) (string, error) {
 	if !token.Valid {
 		return "", fmt.Errorf("token not Valid")
 	}
-	return token.Claims.(jwt.MapClaims)["email"].(string), nil
+	return token.Claims.(jwt.MapClaims)["email"].(string), nil // TODO: change the "email" to const
 }
