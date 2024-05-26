@@ -11,6 +11,7 @@ import (
 
 func Verify(gctx *gin.Context) {
 	email, _ := gctx.Get("Email")
+
 	verified, verifiedErr := postgres.IsVerified(gctx, email.(string))
 	if verifiedErr != nil {
 		gctx.JSONP(http.StatusNotFound, "user does not exists")

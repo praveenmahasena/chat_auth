@@ -32,7 +32,6 @@ func Connect() error {
 	}
 
 	dns := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v", c["HOST"], c["PORT"], c["USER"], c["PASSWORD"], c["DBNAME"], c["SSLMODE"])
-	fmt.Println(dns)
 	connection, err = sql.Open("postgres", dns)
 
 	if err != nil {

@@ -11,9 +11,9 @@ import (
 
 var (
 	c = map[string]string{
-		"URL":      "",
-		"FROM":     "",
-		"PASSWORD": "",
+		"URL":       "",
+		"FROM":      "",
+		"EPASSWORD": "",
 	}
 )
 
@@ -24,7 +24,7 @@ func Mailer(JWT, mailID string, wg *sync.WaitGroup, ch chan<- error) {
 	for e := range c {
 		val := viper.GetString(e)
 		if val == "" {
-			ch <- errors.New("Error during reading config file")
+			ch <- errors.New("error during reading config file")
 			return
 		}
 		c[e] = val
@@ -33,7 +33,7 @@ func Mailer(JWT, mailID string, wg *sync.WaitGroup, ch chan<- error) {
 	to := []string{mailID}
 	smtpHost, smtpPort := "smtp.gmail.com", "587"
 
-	auth := smtp.PlainAuth("", from, password, smtpHost)
+	auth := smtp.PlainAuth("", c["FROM"], c["EPASSWORD"], smtpHost)
 
 	M := fmt.Sprintf("To: %v\r\n"+
 
@@ -41,9 +41,9 @@ func Mailer(JWT, mailID string, wg *sync.WaitGroup, ch chan<- error) {
 
 		"\r\n"+
 
-		"%v\r\n", from, url+JWT)
+		"%v\r\n", c["FROM"], c["URL"]+JWT)
 
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, []byte(M))
+	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, c["FROM"], to, []byte(M))
 
 	if err != nil {
 		ch <- err
