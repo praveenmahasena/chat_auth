@@ -27,8 +27,8 @@ PORT= # contains port id for postgresql
 USER= # contains user name for postgresql DB
 PASSWORD= # contains user name for postgresql DB
 DBNAME= # contains database name for postgresql DB
-SSLMODE=# contains sslmode for postgresql DB
-URL=# contains url for mail service link
+SSLMODE= # contains sslmode for postgresql DB
+URL= # contains url for mail service link
 FROM= # contains emailID which will be used for email service
 EPASSWORD= # contains password of the emailID which is used for email service
 ```
