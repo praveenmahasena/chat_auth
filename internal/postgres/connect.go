@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 
 	_ "github.com/lib/pq"
@@ -10,29 +9,27 @@ import (
 )
 
 var (
-	c = map[string]string{ //credentials
-		"HOST":     "",
-		"PORT":     "",
-		"USER":     "",
-		"PASSWORD": "",
-		"DBNAME":   "",
-		"SSLMODE":  "",
-	}
 	connection *sql.DB
 	err        error
 )
 
-func Connect() error {
-	for e := range c {
-		val := viper.GetString(e)
-		if val == "" {
-			return errors.New("Error during reading config file")
-		}
-		c[e] = val
-	}
+const hostParam = "HOST"
+const portParam = "PORT"
+const userParam = "USER"
+const passwordParam = "PASSWORD"
+const dbNameParam = "DBNAME"
+const sslModeParam = "SSLMODE"
 
-	dns := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v", c["HOST"], c["PORT"], c["USER"], c["PASSWORD"], c["DBNAME"], c["SSLMODE"])
-	connection, err = sql.Open("postgres", dns)
+func Connect() error {
+	host := viper.GetString(hostParam)
+	port := viper.GetString(portParam)
+	user := viper.GetString(userParam)
+	password := viper.GetString(passwordParam)
+	dbName := viper.GetString(dbNameParam)
+	sslmode := viper.GetString(sslModeParam)
+
+	dsn := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=%v", host, port, user, password, dbName, sslmode)
+	connection, err = sql.Open("postgres", dsn)
 
 	if err != nil {
 		return err
