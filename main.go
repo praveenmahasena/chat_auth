@@ -9,7 +9,9 @@ import (
 
 func main() {
 	viper.SetConfigFile(".env")
-	viper.ReadInConfig()
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatalln(err)
+	}
 	if err := internal.Start(); err != nil {
 		log.Fatalln(err)
 	}
